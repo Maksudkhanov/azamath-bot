@@ -14,7 +14,7 @@ bot.action('checkTest', async (ctx) => {
   ctx.reply('Отправьте мне ответы');
 
   bot.on('message', async (ctx) => {
-    let userId = ctx.message.chat.id;
+    const userId = ctx.message.chat.id;
     const answer = ctx.message.text;
     
    
