@@ -5,21 +5,23 @@ const checkAnswer = require('./processAnswers/checkTest').module;
 const bot = new Telegraf('1918945423:AAG_AH6Bp3bNw7ib2Zj9Msw28Aq0aFsMbQM')
 
 bot.start(async (ctx) => {
-  const userId = ctx.message.chat.id;
+  let userId = ctx.message.chat.id;
   const message = 'Здравствуйте, ' + ctx.message.chat.first_name + '\nВыберите команду';
   ctx.telegram.sendMessage(userId, message, startOptions);
 })
 
 bot.action('checkTest', async (ctx) => {
   ctx.reply('Отправьте мне ответы');
-  const userId = ctx.from.id;
 
   bot.on('message', async (ctx) => {
+    let userId = ctx.message.chat.id;
     const answer = ctx.message.text;
+    
    
     const resultOfValidating = validateAnswer(answer);
 
     if (resultOfValidating === true) {
+      console.log(userId);
       const result = checkAnswer(answer, userId)
       ctx.reply(result, { parse_mode: 'HTML' })
       return
@@ -27,6 +29,7 @@ bot.action('checkTest', async (ctx) => {
 
     ctx.reply(resultOfValidating);
   });
+  return
 });
 
 

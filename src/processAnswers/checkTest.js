@@ -4,12 +4,12 @@ const ids = [];
 function checkAnswer(answer, userId) {
     let result = []
 
-    
     if(ids.includes(userId)) {
         return 'Вы уже отправили ответы'
     }
-
+   
     ids.push(userId);
+  
 
     let numberOfCorrect = 0
     for(let i = 0; i < correctAnswers.length; i++) {
