@@ -17,7 +17,7 @@ bot.action('checkTest', async (ctx) => {
   bot.on('message', async (ctx) => {
     const answer = ctx.message.text;
    
-    const resultOfValidating = validateAnswer(answer)
+    const resultOfValidating = validateAnswer(answer);
 
     if (resultOfValidating === true) {
       const result = checkAnswer(answer, userId)
@@ -25,7 +25,7 @@ bot.action('checkTest', async (ctx) => {
       return
     }
 
-    ctx.reply(resultOfValidating)
+    ctx.reply(resultOfValidating);
   });
 });
 
@@ -47,11 +47,13 @@ const startOptions = {
   }
 };
 
-const { telegram: tg } = bot
+bot.launch({dropPendingUpdates: true})
 
-tg.callApi('getUpdates', { offset: -1 })
-  .then(updates => updates.length && updates[0].update_id + 1)
-  .then(offset => { if (offset) return tg.callApi('getUpdates', { offset }) })
-  .then(() => bot.launch())
-  .then(() => console.info('The bot is launched'))
-  .catch(err => console.error(err))
+// const { telegram: tg } = bot
+
+// tg.callApi('getUpdates', { offset: -1 })
+//   .then(updates => updates.length && updates[0].update_id + 1)
+//   .then(offset => { if (offset) return tg.callApi('getUpdates', { offset }) })
+//   .then(() => bot.launch())
+//   .then(() => console.info('The bot is launched'))
+//   .catch(err => console.error(err))
