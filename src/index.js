@@ -1,12 +1,15 @@
 const { Telegraf } = require('telegraf')
 const validateAnswer = require('./processAnswers/validateAnswers').module;
 const checkAnswer = require('./processAnswers/checkTest').module;
+const token = require('./token');
 
-const bot = new Telegraf('1918945423:AAG_AH6Bp3bNw7ib2Zj9Msw28Aq0aFsMbQM')
+const bot = new Telegraf(token)
 
 bot.start(async (ctx) => {
-  let userId = ctx.message.chat.id;
-  const message = 'Здравствуйте, ' + ctx.message.chat.first_name + '\nВыберите команду';
+  const userId = ctx.message.chat.id;
+  const firstName = ctx.message.chat.first_name
+
+  const message = 'Здравствуйте, ' + firstName + '\nВыберите команду';
   ctx.telegram.sendMessage(userId, message, startOptions);
 })
 
@@ -14,15 +17,15 @@ bot.action('checkTest', async (ctx) => {
   ctx.reply('Отправьте мне ответы');
 
   bot.on('message', async (ctx) => {
+  
     const userId = ctx.message.chat.id;
     const answer = ctx.message.text;
     
-   
     const resultOfValidating = validateAnswer(answer);
 
     if (resultOfValidating === true) {
-      console.log(userId);
       const result = checkAnswer(answer, userId)
+      console.log(ctx.message.from);
       ctx.reply(result, { parse_mode: 'HTML' })
       return
     }
@@ -34,7 +37,7 @@ bot.action('checkTest', async (ctx) => {
 
 
 bot.action('getTest', async (ctx) => {
-  await ctx.replyWithPhoto({ source: 'src/test/test.jpg' });
+  await ctx.replyWithDocument({source: 'src/test/Тесты_нового_формата_часть_IV_с_ответами_AzaMath.pdf'});
   ctx.reply('Вы получили тесты! \nУдачи при решении 😊');
 });
 
