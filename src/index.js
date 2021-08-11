@@ -14,7 +14,8 @@ bot.start(async (ctx) => {
 })
 
 bot.action('checkTest', async (ctx) => {
-  ctx.reply('Отправьте мне ответы');
+  ctx.reply('Отправьте мне ответы\n');
+  ctx.reply('Lifehack: Можно отправить четные номера заглавными, а нечетные строчными');
 
   bot.on('message', async (ctx) => {
   
@@ -26,8 +27,7 @@ bot.action('checkTest', async (ctx) => {
     if (resultOfValidating === true) {
       const result = checkAnswer(answer, userId)
       console.log(ctx.message.from);
-      ctx.reply(result, { parse_mode: 'HTML' })
-      return
+      return ctx.reply(result, { parse_mode: 'HTML' })
     }
 
     ctx.reply(resultOfValidating);
@@ -38,7 +38,7 @@ bot.action('checkTest', async (ctx) => {
 
 bot.action('getTest', async (ctx) => {
   await ctx.replyWithDocument({source: 'src/test/Тесты_нового_формата_часть_IV_с_ответами_AzaMath.pdf'});
-  ctx.reply('Вы получили тесты! \nУдачи при решении 😊');
+  ctx.reply('Вы получили тесты! \nУдачи при решении😊');
 });
 
 
@@ -54,12 +54,3 @@ const startOptions = {
 };
 
 bot.launch({dropPendingUpdates: true})
-
-// const { telegram: tg } = bot
-
-// tg.callApi('getUpdates', { offset: -1 })
-//   .then(updates => updates.length && updates[0].update_id + 1)
-//   .then(offset => { if (offset) return tg.callApi('getUpdates', { offset }) })
-//   .then(() => bot.launch())
-//   .then(() => console.info('The bot is launched'))
-//   .catch(err => console.error(err))
