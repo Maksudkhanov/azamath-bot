@@ -20,17 +20,35 @@ function checkAnswer(answer, userId) {
             result[i] = '❌';
         }
     }
+    const results = format(result, numberOfCorrect);
+   
 
-    const results = 
-`Результат
-1. ${result[0]}     6. ${result[5]}     11. ${result[10]}     16. ${result[15]}
-2. ${result[1]}     7. ${result[6]}     12. ${result[11]}     17. ${result[16]}
-3. ${result[2]}     8. ${result[7]}     13. ${result[12]}     18. ${result[17]}
-4. ${result[3]}     9. ${result[8]}     14. ${result[13]}     19. ${result[18]}
-5. ${result[4]}   10. ${result[9]}     15. ${result[14]}     20. ${result[19]}
-\nКоличество правильных: ${numberOfCorrect}`
+//     const results = 
+// `Результат
+// 1. ${result[0]}     6. ${result[5]}     11. ${result[10]}     16. ${result[15]}
+// 2. ${result[1]}     7. ${result[6]}     12. ${result[11]}     17. ${result[16]}
+// 3. ${result[2]}     8. ${result[7]}     13. ${result[12]}     18. ${result[17]}
+// 4. ${result[3]}     9. ${result[8]}     14. ${result[13]}     19. ${result[18]}
+// 5. ${result[4]}   10. ${result[9]}     15. ${result[14]}     20. ${result[19]}
+// \nКоличество правильных: ${numberOfCorrect}`
     
-    return results.bold()
+    return results
 }
+
+function format(tests, numberOfCorrect) {
+    const columns = 4;
+    const rows = Math.floor(tests.length/columns);
+    let str = 'Результат\n';
+    for(let i = 0; i < rows; i++) {
+        for(let j = 0; j < columns; j++) {
+            str+= `${i+j*5 + 1}. ${tests[i+j*5]}`;
+            str+='    '; // \t is deleting by Telegram in output
+        }
+        str+='\n'
+    } 
+    str+=`\nКоличество правильных: ${numberOfCorrect}`;
+    console.log(str);
+    return str.bold(); 
+ }
 
 exports.module = checkAnswer;
