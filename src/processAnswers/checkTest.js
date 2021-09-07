@@ -41,12 +41,16 @@ function format(tests, numberOfCorrect) {
     let str = 'Результат\n';
     for(let i = 0; i < rows; i++) {
         for(let j = 0; j < columns; j++) {
-            str+= `${i+j*5 + 1}. ${tests[i+j*5]}`;
-            str+='    '; // \t is deleting by Telegram in output
+            const number = i+j*5 + 1
+            const numberResult = tests[i+j*5]
+            str+= `${number}. ${numberResult}`;
+            str+= '    '; // problems with \t
+            if(number > 0 && number < 5) {
+                str+= '  '
+            }
         }
         str+='\n'
     } 
-    str+=`\nКоличество правильных: ${numberOfCorrect}`;
     console.log(str);
     return str.bold(); 
  }
