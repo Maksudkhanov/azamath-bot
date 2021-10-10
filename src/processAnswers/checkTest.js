@@ -1,4 +1,4 @@
-const correctAnswers = require('../test/correctAnswers').module
+const correctAnswers = require('../test/correctAnswers')
 const ids = [];
 
 function checkAnswer(answer, userId) {
@@ -36,7 +36,7 @@ function checkAnswer(answer, userId) {
 }
 
 function format(tests, numberOfCorrect) {
-    const columns = 4;
+    const columns = 3;
     const rows = Math.floor(tests.length/columns);
     let str = 'Результат\n';
     for(let i = 0; i < rows; i++) {
@@ -44,15 +44,15 @@ function format(tests, numberOfCorrect) {
             const number = i+j*5 + 1
             const numberResult = tests[i+j*5]
             str+= `${number}. ${numberResult}`;
-            str+= '    '; // problems with \t
+            str+= '     '; // problems with \t
             if(number > 0 && number < 5) {
                 str+= '  '
             }
         }
-        str+='\n'
-    } 
-    console.log(str);
+        str+='\n';
+    }
+    str+='\nКоличество правильных: ' + numberOfCorrect 
     return str.bold(); 
  }
 
-exports.module = checkAnswer;
+ module.exports = checkAnswer;

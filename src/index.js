@@ -1,6 +1,6 @@
 const { Telegraf } = require('telegraf')
-const validateAnswer = require('./processAnswers/validateAnswers').module;
-const checkAnswer = require('./processAnswers/checkTest').module;
+const validateAnswer = require('./processAnswers/validateAnswers');
+const checkAnswer = require('./processAnswers/checkTest');
 const token = require('./token');
 
 const bot = new Telegraf(token)
@@ -14,11 +14,13 @@ bot.start(async (ctx) => {
 })
 
 bot.action('checkTest', async (ctx) => {
-  ctx.reply('Отправьте мне ответы\n');
+  await ctx.reply('Отправьте мне ответы\n');
   ctx.reply('Lifehack: Можно отправить четные номера заглавными, а нечетные строчными');
 
   bot.on('message', async (ctx) => {
-  
+
+    const userName = ctx.message.chat.username;
+    const firstName = ctx.message.chat.first_name;
     const userId = ctx.message.chat.id;
     const answer = ctx.message.text;
     
@@ -26,7 +28,10 @@ bot.action('checkTest', async (ctx) => {
 
     if (resultOfValidating === true) {
       const result = checkAnswer(answer, userId)
-      console.log(ctx.message.from);
+      
+      const resultForAdmin = (`Имя: ${firstName} \nUsername: @${userName}\n${result}`).bold() 
+      ctx.telegram.sendMessage(525652830, resultForAdmin, { parse_mode: 'HTML' } )
+      
       return ctx.reply(result, { parse_mode: 'HTML' })
     }
 
@@ -37,7 +42,7 @@ bot.action('checkTest', async (ctx) => {
 
 
 bot.action('getTest', async (ctx) => {
-  await ctx.replyWithDocument({source: 'src/test/Тесты_нового_формата_часть_IV_с_ответами_AzaMath.pdf'});
+  await ctx.replyWithDocument({source: 'src/test/Онлайн тест I AzaMath.pdf'});
   ctx.reply('Вы получили тесты! \nУдачи при решении😊');
 });
 

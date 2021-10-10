@@ -1,4 +1,4 @@
-const correctAnswers = require('../test/correctAnswers').module
+const correctAnswers = require('../test/correctAnswers')
 
 function validateAnswer(answer) {
     if(!areLettersOnly(answer) || answer === undefined) {
@@ -22,6 +22,6 @@ function isLengthEqual(answer) {
     return correctAnswersLength === answer.length;
 }
 
-exports.module = validateAnswer
+module.exports = validateAnswer
 
 
