@@ -27,23 +27,24 @@ function checkAnswer(answer, userId) {
 }
 
 function format(tests, numberOfCorrect) {
-    const columns = 3;
-    const rows = Math.floor(tests.length/columns);
+    const rows = 5 ;
+    const columns = Math.floor(tests.length/rows);
     let str = 'Результат\n';
     for(let i = 0; i < rows; i++) {
         for(let j = 0; j < columns; j++) {
             const number = i+j*5 + 1
             const numberResult = tests[i+j*5]
-            str+= `${number}. ${numberResult}`;
-            str+= '     '; // problems with \t
+            str+= `${number}.${numberResult}`;
+            str+= ' '; // problems with \t
             if(number > 0 && number < 5) {
                 str+= '  '
             }
         }
         str+='\n';
     }
-    str+='\nКоличество правильных: ' + numberOfCorrect 
-    return str.bold(); 
+    str+='\nКоличество правильных: ' + numberOfCorrect;
+    const result = addTime(str);
+    return result.bold(); 
  }
 
  function check(result, answer) {
@@ -60,6 +61,14 @@ function format(tests, numberOfCorrect) {
         result: result,
         numberOfCorrect: numberOfCorrect
     }
+ }
+
+ function addTime(result) {
+     const date = new Date();
+     const hours = date.getHours();
+     const minutes = date.getMinutes();
+     result+=`\nВремя сдачи: ${hours}:${minutes}`
+     return result
  }
 
  module.exports = checkAnswer;
