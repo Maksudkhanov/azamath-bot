@@ -2,6 +2,7 @@ const { Telegraf } = require('telegraf')
 const validateAnswer = require('./processAnswers/validateAnswers');
 const checkAnswer = require('./processAnswers/checkTest');
 const token = require('./token');
+const adminId = 525652830;
 
 const bot = new Telegraf(token)
 
@@ -19,31 +20,37 @@ bot.action('checkTest', async (ctx) => {
 
   bot.on('message', async (ctx) => {
 
-    const userName = ctx.message.chat.username;
-    const firstName = ctx.message.chat.first_name;
+    const userName = ctx.message.chat.username || '';;
+    const firstName = ctx.message.chat.first_name || '';;
+    const secondName = ctx.message.chat.last_name || '';  
     const userId = ctx.message.chat.id;
     const answer = ctx.message.text;
     
-    const resultOfValidating = validateAnswer(answer);
+    const answerValidated = validateAnswer(answer);
 
-    if (resultOfValidating === true) {
-      const result = checkAnswer(answer, userId)
-      
-      const resultForAdmin = (`Имя: ${firstName} \nUsername: @${userName}\n${result}`).bold() 
-      ctx.telegram.sendMessage(525652830, resultForAdmin, { parse_mode: 'HTML' } )
-      
-      return ctx.reply(result, { parse_mode: 'HTML' })
+    if(answerValidated.state === false) {
+      ctx.reply(answerValidated.message)
     }
 
-    ctx.reply(resultOfValidating);
+    if (answerValidated.state === true) {
+      const result = checkAnswer(answer, userId)
+      const resultForAdmin = (`Имя: ${firstName} Фамилия: ${secondName} \nUsername: @${userName}\n${result}`).bold() 
+      
+      ctx.telegram.sendMessage(adminId, resultForAdmin, { parse_mode: 'HTML' } )
+      ctx.reply(result, { parse_mode: 'HTML' })
+    }
   });
-  return
 });
 
 
 bot.action('getTest', async (ctx) => {
-  await ctx.replyWithDocument({source: 'src/test/Онлайн тест I AzaMath.pdf'});
+  const user = ctx.update.callback_query.message.chat;
+  const firstName = user.first_name || '';
+  const secondName = user.last_name || '';
+
+  await ctx.replyWithDocument({source: 'src/test/Онлайн тест II AzaMath.pdf'});
   ctx.reply('Вы получили тесты! \nУдачи при решении😊');
+  ctx.telegram.sendMessage(adminId, `${firstName} ${secondName} получил тесты`)
 });
 
 

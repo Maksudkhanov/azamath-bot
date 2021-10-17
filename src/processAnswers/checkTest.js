@@ -10,18 +10,9 @@ function checkAnswer(answer, userId) {
    
     ids.push(userId);
   
-
-    let numberOfCorrect = 0
-    for(let i = 0; i < correctAnswers.length; i++) {
-        if(correctAnswers[i] === answer[i].toLowerCase()) {
-            result[i] = '✅';
-            numberOfCorrect++;
-        } else {
-            result[i] = '❌';
-        }
-    }
-    const results = format(result, numberOfCorrect);
-   
+    const checkedResult = check(result, answer)
+    const formatedResult = format(checkedResult.result, checkedResult.numberOfCorrect);
+    return formatedResult
 
 //     const results = 
 // `Результат
@@ -32,7 +23,7 @@ function checkAnswer(answer, userId) {
 // 5. ${result[4]}   10. ${result[9]}     15. ${result[14]}     20. ${result[19]}
 // \nКоличество правильных: ${numberOfCorrect}`
     
-    return results
+    
 }
 
 function format(tests, numberOfCorrect) {
@@ -53,6 +44,22 @@ function format(tests, numberOfCorrect) {
     }
     str+='\nКоличество правильных: ' + numberOfCorrect 
     return str.bold(); 
+ }
+
+ function check(result, answer) {
+    let numberOfCorrect = 0
+    for(let i = 0; i < correctAnswers.length; i++) {
+        if(correctAnswers[i] === answer[i].toLowerCase()) {
+            result[i] = '✅';
+            numberOfCorrect++;
+        } else {
+            result[i] = '❌';
+        }
+    }
+    return {
+        result: result,
+        numberOfCorrect: numberOfCorrect
+    }
  }
 
  module.exports = checkAnswer;

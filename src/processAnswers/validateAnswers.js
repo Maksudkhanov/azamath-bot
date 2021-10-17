@@ -2,15 +2,21 @@ const correctAnswers = require('../test/correctAnswers')
 
 function validateAnswer(answer) {
     if(!areLettersOnly(answer) || answer === undefined) {
-        return 'Отправьте ответы в текстовом формате';
+        return {
+            state: false,
+            message: 'Отправьте ответы в текстовом формате'
+        }
     }
 
     if(!isLengthEqual(answer)) {
        
-        return 'Неправильное количество ответов. Попробуйте снова'
+        return {
+            state: false,
+            message: 'Неправильное количество ответов. Попробуйте снова'
+        }
     }
 
-    return true
+    return {state: true}
 }
 
 function areLettersOnly(answer) {
