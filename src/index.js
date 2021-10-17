@@ -1,4 +1,4 @@
-const { Telegraf } = require('telegraf')
+const { Telegraf, HttpError } = require('telegraf')
 const validateAnswer = require('./processAnswers/validateAnswers');
 const checkAnswer = require('./processAnswers/checkTest');
 const token = require('./token');
@@ -52,6 +52,13 @@ bot.action('getTest', async (ctx) => {
   ctx.reply('Вы получили тесты! \nУдачи при решении😊');
   ctx.telegram.sendMessage(adminId, `${firstName} ${secondName} получил тесты`)
 });
+
+bot.catch((err) => {
+  console.log('Ooops', err)
+  if (err instanceof HttpError) {
+    console.error("Could not contact Telegram:", err);
+  }
+})
 
 
 const startOptions = {
